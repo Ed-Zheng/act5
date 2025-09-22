@@ -15,6 +15,7 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
   String petName = "Your Pet";
   int happinessLevel = 50;
   int hungerLevel = 50;
+  final TextEditingController _nameController = TextEditingController();
 
   void _playWithPet() {
     setState(() {
@@ -78,14 +79,37 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+          children: [
+
+            Container(
+              width: 120,
+              child: TextField(
+                controller: _nameController,
+                decoration: InputDecoration(
+                  hintText: 'Enter Pet Name',
+                ),
+              ),
+            ),
+
+            SizedBox(height: 8.0),
+
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  if (_nameController.text.trim().isNotEmpty) {
+                    petName = _nameController.text.trim();
+                  }
+                });
+              },
+              child: Text("Confirm"),
+            ),
+
+            SizedBox(height: 30.0),
 
             Text(
               'Name: $petName',
               style: TextStyle(fontSize: 20.0),
             ),
-
-            SizedBox(height: 16.0),
             
             ColorFiltered(
               colorFilter: ColorFilter.mode(
@@ -100,7 +124,7 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
             ),
 
             Transform.translate(
-              offset: const Offset(120, -180),
+              offset: const Offset(125, -185),
               child: Image.asset(
                 _moodEmoji(happinessLevel.toDouble()),
                 width: 40,
