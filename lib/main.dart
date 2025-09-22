@@ -18,6 +18,9 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
   int hungerLevel = 50;
   final TextEditingController _nameController = TextEditingController();
   Timer? _hungerTimer;
+  Timer? _happyTimer;
+  int _happyDuration = 0;
+  final int winCondition = 80;
 
   void _playWithPet() {
     setState(() {
