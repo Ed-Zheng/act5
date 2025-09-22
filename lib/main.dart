@@ -58,6 +58,16 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
     }
   }
 
+  String _moodEmoji(double happinessLevel) {
+    if (happinessLevel > 70) {
+      return 'assets/images/happy.png';
+    } else if (happinessLevel >= 30) {
+      return 'assets/images/neutral.png';
+    } else {
+      return 'assets/images/angry.png';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,6 +96,15 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
                 'assets/images/pet_whale.png',
                 width: 200,
                 height: 200,
+              ),
+            ),
+
+            Transform.translate(
+              offset: const Offset(120, -180),
+              child: Image.asset(
+                _moodEmoji(happinessLevel.toDouble()),
+                width: 40,
+                height: 40,
               ),
             ),
 
