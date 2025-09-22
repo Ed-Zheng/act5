@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 void main() {
   runApp(MaterialApp(
@@ -16,6 +17,7 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
   int happinessLevel = 50;
   int hungerLevel = 50;
   final TextEditingController _nameController = TextEditingController();
+  Timer? _hungerTimer;
 
   void _playWithPet() {
     setState(() {
@@ -68,6 +70,16 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
       return 'assets/images/angry.png';
     }
   }
+
+@override
+void initState() {
+  super.initState();
+  _hungerTimer = Timer.periodic(Duration(seconds: 30), (timer) {
+    setState(() {
+      hungerLevel += 5;
+    });
+  });
+}
 
   @override
   Widget build(BuildContext context) {
