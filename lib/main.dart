@@ -57,12 +57,6 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
       return Colors.red;
     }
   }
- 
-/* Pseudocode
-  1. Find an image for the pet (make sure its transparent)
-  2. Create a color changing function inside the DigitalPetAppState according to mood
-
-*/
 
   @override
   Widget build(BuildContext context) {
