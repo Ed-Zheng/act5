@@ -48,6 +48,22 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
     });
   }
 
+  Color _moodColor(double happinessLevel) {
+    if (happinessLevel > 70) {
+      return Colors.green;
+    } else if (happinessLevel >= 30) {
+      return Colors.yellow;
+    } else {
+      return Colors.red;
+    }
+  }
+ 
+/* Pseudocode
+  1. Find an image for the pet (make sure its transparent)
+  2. Create a color changing function inside the DigitalPetAppState according to mood
+
+*/
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,6 +82,18 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
             ),
 
             SizedBox(height: 16.0),
+            
+            ColorFiltered(
+              colorFilter: ColorFilter.mode(
+                _moodColor(happinessLevel.toDouble()), // Pass the pet's happiness level
+                BlendMode.modulate,
+              ),
+              child: Image.asset(
+                'assets/images/pet_whale.png',
+                width: 200,
+                height: 200,
+              ),
+            ),
 
             Text(
               'Happiness Level: $happinessLevel',
