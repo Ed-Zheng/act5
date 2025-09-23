@@ -26,14 +26,18 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
   void _playWithPet() {
     setState(() {
       happinessLevel += 10;
+      energyLevel -= 10;
       _updateHunger();
+      _updateEnergy();
     });
   }
 
   void _feedPet() {
     setState(() {
       hungerLevel -= 10;
+      energyLevel += 10;
       _updateHappiness();
+      _updateEnergy();
     });
   }
 
@@ -53,6 +57,17 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
       if (hungerLevel > 100) {
         hungerLevel = 100;
         happinessLevel -= 20;
+      }
+      _checkLossCondition();
+    });
+  }
+
+  void _updateEnergy() {
+    setState(() {
+      if (energyLevel > 100) energyLevel = 100;
+      if (energyLevel < 0) {
+        energyLevel = 0;
+        happinessLevel -= 10;
       }
       _checkLossCondition();
     });
@@ -82,7 +97,7 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
     if (happinessLevel >= winCondition) {
       _happyTimer ??= Timer.periodic(Duration(seconds: 1), (timer) {
         _happyDuration++;
-        if (_happyDuration >= 180) {
+        if (_happyDuration >= 180 && energyLevel >= 80) {
           timer.cancel();
           _happyTimer = null;
           _happyDuration = 0;
@@ -97,7 +112,7 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
   }
 
   void _checkLossCondition() {
-    if (hungerLevel >= 100 && happinessLevel <= 10) {
+    if (hungerLevel >= 100 && happinessLevel <= 10 && energyLevel <= 10) {
       _losePopup();
     }
   }
@@ -144,6 +159,7 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
     _hungerTimer = Timer.periodic(Duration(seconds: 30), (timer) {
       setState(() {
         hungerLevel += 5;
+        energyLevel -= 5;
         _checkLossCondition();
       });
     });
