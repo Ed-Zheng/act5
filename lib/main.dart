@@ -43,6 +43,7 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
       happinessLevel += 10;
     }
     _checkHappinessTimer();
+    _checkLossCondition();
   }
 
   void _updateHunger() {
@@ -52,6 +53,7 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
         hungerLevel = 100;
         happinessLevel -= 20;
       }
+      _checkLossCondition();
     });
   }
 
@@ -93,12 +95,18 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
     }
   }
 
+  void _checkLossCondition() {
+    if (hungerLevel >= 100 && happinessLevel <= 10) {
+      _losePopup();
+    }
+  }
+
   void _winPopup() {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Your pet is happy!"),
+          title: Text("You're a great pet owner!"),
           content: Text("Happiness has stayed above 80 for 3 minutes!"),
           actions: [
             TextButton(
@@ -111,12 +119,31 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
     );
   }
 
+  void _losePopup() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("You are not fit for pets"),
+          content: Text("Hunger was maxed and happiness went below 10"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text("Ok"),
+            )
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
     _hungerTimer = Timer.periodic(Duration(seconds: 30), (timer) {
       setState(() {
         hungerLevel += 5;
+        _checkLossCondition();
       });
     });
   }
