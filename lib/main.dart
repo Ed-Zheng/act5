@@ -21,6 +21,7 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
   Timer? _happyTimer;
   int _happyDuration = 0;
   final int winCondition = 80;
+  int energyLevel = 50;
 
   void _playWithPet() {
     setState(() {
@@ -198,12 +199,12 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
               child: Image.asset(
                 'assets/images/pet_whale.png',
                 width: 200,
-                height: 200,
+                height: 130,
               ),
             ),
 
             Transform.translate(
-              offset: const Offset(125, -185),
+              offset: const Offset(125, -145),
               child: Image.asset(
                 _moodEmoji(happinessLevel.toDouble()),
                 width: 40,
@@ -230,11 +231,25 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
               child: Text('Play with Your Pet'),
             ),
 
-            SizedBox(height: 16.0),
+            SizedBox(height: 10.0),
 
             ElevatedButton(
               onPressed: _feedPet,
               child: Text('Feed Your Pet'),
+            ),
+
+            SizedBox(height: 16.0),
+
+            Text(
+              'Energy Level: $energyLevel',
+              style: TextStyle(fontSize: 20.0),
+            ),
+
+            LinearProgressIndicator(
+              value: energyLevel / 100,
+              minHeight: 20,
+              backgroundColor: Colors.grey[300],
+              color: const Color.fromARGB(255, 255, 255, 0),
             ),
           ],
         ),
