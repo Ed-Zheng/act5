@@ -42,6 +42,7 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
     } else {
       happinessLevel += 10;
     }
+    _checkHappinessTimer();
   }
 
   void _updateHunger() {
@@ -74,15 +75,51 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
     }
   }
 
-@override
-void initState() {
-  super.initState();
-  _hungerTimer = Timer.periodic(Duration(seconds: 30), (timer) {
-    setState(() {
-      hungerLevel += 5;
+  void _checkHappinessTimer() {
+    if (happinessLevel >= winCondition) {
+      _happyTimer ??= Timer.periodic(Duration(seconds: 1), (timer) {
+        _happyDuration++;
+        if (_happyDuration >= 180) {
+          timer.cancel();
+          _happyTimer = null;
+          _happyDuration = 0;
+          _winPopup();
+        }
+      });
+    } else {
+      _happyTimer?.cancel();
+      _happyTimer = null;
+      _happyDuration = 0;
+    }
+  }
+
+  void _winPopup() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Your pet is happy!"),
+          content: Text("Happiness has stayed above 80 for 3 minutes!"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _hungerTimer = Timer.periodic(Duration(seconds: 30), (timer) {
+      setState(() {
+        hungerLevel += 5;
+      });
     });
-  });
-}
+  }
 
   @override
   Widget build(BuildContext context) {
